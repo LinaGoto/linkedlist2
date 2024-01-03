@@ -35,12 +35,27 @@ void add(Student *newstudent){
 void del(int id){
   Node *current = head;
 
-#if 0
-  while ((current != NULL) && (current -> getid() != id)) current = current -> getnext();
+  while ((current != NULL) && (current -> getStudent() -> getid() != id)) current = current -> getNext();
 
-  if ((current != NULL) && (current -> getid() = id)){
+  if (current == NULL) return;
+
+  if (current == head) {
+    /* if data is at head */
+    head = current -> getNext();
+    delete current;
+  } else if (current -> getNext() == NULL) {
+    /* if data is at tail */
+    Node *prev = head;
+    while (prev -> getNext() != current) prev = prev -> getNext();
+    prev -> setNext(NULL);
+    delete current;
+  } else {
+    /* otherwise */
+    Node *prev = head;
+    while (prev -> getNext() != current) prev = prev -> getNext();
+    prev -> setNext(current -> getNext());
+    delete current;
   }
-#endif
 }
 
 //printing the node
