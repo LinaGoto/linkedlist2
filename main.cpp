@@ -6,11 +6,12 @@ using namespace std;
 
 /*
 Lina Goto
-12/4/23
+1/3/24
 Linked list
  */
 
 void add(Student *newstudent);
+void del(int id);
 void print(Node* next);
 
 static Node *head = NULL;
@@ -34,23 +35,26 @@ void add(Student *newstudent){
 //delete number in node
 void del(int id){
   Node *current = head;
-
+  //find the matching id and make it current
   while ((current != NULL) && (current -> getStudent() -> getid() != id)) current = current -> getNext();
-
+  //return if there is no match
   if (current == NULL) return;
-
+  //current is set check if its head tail or in the middle
   if (current == head) {
-    /* if data is at head */
+    //if data is at head
+    //set the head pointer to point to the one next to current
     head = current -> getNext();
     delete current;
   } else if (current -> getNext() == NULL) {
-    /* if data is at tail */
+    //if data is at tail
+    //get previous and set pointer to the null
     Node *prev = head;
     while (prev -> getNext() != current) prev = prev -> getNext();
     prev -> setNext(NULL);
     delete current;
   } else {
-    /* otherwise */
+    //otherwise
+    //get previous and set pointer to the one next to current
     Node *prev = head;
     while (prev -> getNext() != current) prev = prev -> getNext();
     prev -> setNext(current -> getNext());
@@ -67,9 +71,8 @@ void print (Node *next) {
   //if the node is not null (until the last node) print the values
   if (next != NULL) {
     Student *student = next -> getStudent();
-    
+    //print out
     cout << student -> getid() << "  " << student -> getgpa() <<  " "  << student -> getname() << endl;
-
     //recursive call
     print (next -> getNext());
     if (next -> getNext() == NULL) {
@@ -92,20 +95,20 @@ int main() {
       int id;
       float gpa;
       char name[20];
-      
+      //name
       cout << "Name:" << endl;
       cin.get(name, 10);
       cin.get();
-      
+      //id
       cout << "ID:" << endl;
       cin >> id;
       cin.get();
-      
+      //gpa
       cout << "GPA:" << endl;
       cin >> gpa;
       cin.get();
       student = new Student();
-      
+      //add the values
       student -> setValue(id, gpa, name);
       add(student);
     }
@@ -118,6 +121,7 @@ int main() {
     //if delete
     if((input[0] == 'D') || (input[0] == 'd')){
       int id;
+      //get id
       cout << "Enter student id: " << endl;
       cin >> id;
       cin.get();
