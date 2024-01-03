@@ -10,26 +10,24 @@ Lina Goto
 Linked list
  */
 
-void add(int newvalue);
+void add(Student *newstudent);
 void print(Node* next);
 
 static Node *head = NULL;
 
 //add number in node
-void add(int newvalue){
+void add(Student *newstudent){
   Node *current = head;
   Node *newnode;
   //very first node; add new node and set value
   if (current == NULL) {
-    head = new Node();
-    head -> setValue(newvalue);
+    head = new Node(newstudent);
   } else {//find node which next is NULL - set new node by pointer and set value
     while (current -> getNext() != NULL){
       current = current -> getNext();
     }
-    newnode = new Node();
-    current -> setNext(newnode);
-    current -> getNext() -> setValue(newvalue);
+    newnode = new Node(newstudent);
+    current -> getNext() -> setNext(newnode);
   }
 }
 
@@ -41,7 +39,7 @@ void print (Node *next) {
   }
   //if the node is not null (until the last node) print the values
   if (next != NULL) {
-    cout << next -> getValue() << " ";
+    cout << next -> getStudent() -> getValue() << " ";
     //recursive call
     print (next -> getNext());
     if (next -> getNext() == NULL) {
@@ -51,11 +49,11 @@ void print (Node *next) {
 }
 
 int main() {
-  add(5);
-  print(head);
-  add(1);
-  print(head);
-  add(2);
+  Student student1;
+
+  student1.setValue(3);
+
+  add(&student1);
   print(head);
 
   return 0;
