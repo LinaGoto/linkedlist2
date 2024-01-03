@@ -3,10 +3,15 @@
 
 class Student {
  private:
-  int value;
-
+  int id;
+  float gpa;
+  char name[50];
+  
  public:
-  int getValue();
-  void setValue(int);
+  int getid();
+  float getgpa();
+  char *getname();
+  
+  void setValue(int id, float gpa, char *name);
 };
 #endif

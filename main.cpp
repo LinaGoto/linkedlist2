@@ -31,7 +31,7 @@ void add(Student *newstudent){
   }
 }
 
-//del number in node
+//delete number in node
 void del(Student *newstudent){
   Node *current = head;
   Node *newnode;
@@ -55,7 +55,7 @@ void print (Node *next) {
   }
   //if the node is not null (until the last node) print the values
   if (next != NULL) {
-    cout << next -> getStudent() -> getValue() << " ";
+    cout << next -> getStudent() -> getname() << " ";
     //recursive call
     print (next -> getNext());
     if (next -> getNext() == NULL) {
@@ -70,20 +70,22 @@ int main() {
   Student student3;
   Student student4;
 
-  student1.setValue(3);
-  student2.setValue(5);
-  student3.setValue(1);
-  student4.setValue(2);
+  student1.setValue(3, 2.5, "Lina GOto");
+  student2.setValue(5, 3.0, "Kazushige Goto");
+  student3.setValue(1, 2.1, "Natsumi Goto");
+  student4.setValue(2, 4.0, "Ellie Goto");
 
   add(&student1);
   print(head);
+#if 0
   add(&student2);
   print(head);
   add(&student3);
   print(head);
   add(&student4);
   print(head);
-
+#endif
+  
   return 0;
 }
 
