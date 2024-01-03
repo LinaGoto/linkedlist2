@@ -1,3 +1,5 @@
+//code from Gordon Chen
+
 #ifndef NODE_H
 #define NODE_H
 

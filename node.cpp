@@ -1,3 +1,4 @@
+//code from Gordon Chen
 #include "node.h"
 #include "student.h"
 #include <iostream>
