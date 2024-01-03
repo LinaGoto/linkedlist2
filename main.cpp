@@ -27,25 +27,22 @@ void add(Student *newstudent){
       current = current -> getNext();
     }
     newnode = new Node(newstudent);
-    current -> getNext() -> setNext(newnode);
+    current -> setNext(newnode);
   }
 }
 
+#if 0
 //delete number in node
-void del(Student *newstudent){
+void del(int id){
   Node *current = head;
-  Node *newnode;
-  //very first node; del new node and set value
-  if (current == NULL) {
-    head = new Node(newstudent);
-  } else {//find node which next is NULL - set new node by pointer and set value
-    while (current -> getNext() != NULL){
-      current = current -> getNext();
-    }
-    newnode = new Node(newstudent);
-    current -> getNext() -> setNext(newnode);
+
+  while ((current != NULL) && (current -> getid() != id)) current = current -> getnext();
+
+  if ((current != NULL) && (current -> getid() = id)){
+
   }
 }
+#endif
 
 //printing the node
 void print (Node *next) {
@@ -77,14 +74,12 @@ int main() {
 
   add(&student1);
   print(head);
-#if 0
   add(&student2);
   print(head);
   add(&student3);
   print(head);
   add(&student4);
   print(head);
-#endif
   
   return 0;
 }
