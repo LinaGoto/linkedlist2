@@ -31,28 +31,30 @@ void add(Student *newstudent){
   }
 }
 
-#if 0
 //delete number in node
 void del(int id){
   Node *current = head;
 
+#if 0
   while ((current != NULL) && (current -> getid() != id)) current = current -> getnext();
 
   if ((current != NULL) && (current -> getid() = id)){
-
   }
-}
 #endif
+}
 
 //printing the node
 void print (Node *next) {
   //if the node is very first print list:
   if (next == head){
-    cout << "list: ";
+    cout << "ID  GPA  NAME " << endl;
   }
   //if the node is not null (until the last node) print the values
   if (next != NULL) {
-    cout << next -> getStudent() -> getname() << " ";
+    Student *student = next -> getStudent();
+    
+    cout << student -> getid() << "  " << student -> getgpa() <<  " "  << student -> getname() << endl;
+
     //recursive call
     print (next -> getNext());
     if (next -> getNext() == NULL) {
@@ -62,24 +64,53 @@ void print (Node *next) {
 }
 
 int main() {
-  Student student1;
-  Student student2;
-  Student student3;
-  Student student4;
-
-  student1.setValue(3, 2.5, "Lina GOto");
-  student2.setValue(5, 3.0, "Kazushige Goto");
-  student3.setValue(1, 2.1, "Natsumi Goto");
-  student4.setValue(2, 4.0, "Ellie Goto");
-
-  add(&student1);
-  print(head);
-  add(&student2);
-  print(head);
-  add(&student3);
-  print(head);
-  add(&student4);
-  print(head);
+  Student *student;
+  char input[10];
+  
+  do {
+    cout << "ADD/PRINT/DELETE/QUIT: " << endl;
+    cin.get(input,10);
+    cin.get();
+    
+    //if add
+    if ((input[0] == 'A') || (input[0] == 'a')){
+      int id;
+      float gpa;
+      char name[20];
+      
+      cout << "Name:" << endl;
+      cin.get(name, 10);
+      cin.get();
+      
+      cout << "ID:" << endl;
+      cin >> id;
+      cin.get();
+      
+      cout << "GPA:" << endl;
+      cin >> gpa;
+      cin.get();
+      student = new Student();
+      
+      student -> setValue(id, gpa, name);
+      add(student);
+    }
+    
+    //if print
+    if ((input[0] == 'P') || (input[0] == 'p')){
+      print (head);
+    }
+    
+    //if delete
+    if((input[0] == 'D') || (input[0] == 'd')){
+      int id;
+      cout << "Enter student id: " << endl;
+      cin >> id;
+      cin.get();
+      del(id);
+    }
+    
+  } while ((input[0] != 'Q') && (input[0] != 'q'));
+  //end with quit
   
   return 0;
 }
