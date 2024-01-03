@@ -1,7 +1,8 @@
-//code from Gordon Chen
+//code from Gorden Chen
+
 #include <iostream>
-#include "Student.h"
-#include "Node.h"
+#include "student.h"
+#include "node.h"
 
 using namespace std;
 

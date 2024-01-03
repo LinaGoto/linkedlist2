@@ -1,10 +1,10 @@
-//code from Gordon Chen
+//code from Gorden Chen
 
 #ifndef NODE_H
 #define NODE_H
 
 #include <iostream>
-#include "Student.h"
+#include "student.h"
 
 using namespace std;
 
