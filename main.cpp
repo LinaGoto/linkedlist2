@@ -16,50 +16,118 @@ void print(Node* next);
 
 static Node *head = NULL;
 
-//add number in node
-void add(Student *newstudent){
-  Node *current = head;
-  Node *newnode;
-  //very first node; add new node and set value
-  if (current == NULL) {
-    head = new Node(newstudent);
-  } else {//find node which next is NULL - set new node by pointer and set value
-    while (current -> getNext() != NULL){
-      current = current -> getNext();
+// Recursive call function to find out last node
+Node *findLastNode(Node *CurNode) {
+  Node *RetNode;
+  if (CurNode == NULL) {
+    RetNode = NULL;
+  } else if (CurNode -> getNext() == NULL) {
+    RetNode = CurNode;
+  } else {
+    RetNode = findLastNode(CurNode -> getNext());
+  }
+  return RetNode;
+}
+
+// Recursive call function to find out previous Node
+Node *findPreNode(Node *CurNode, Node *target) {
+  Node *RetNode;
+  if ((CurNode == NULL) || (CurNode == target)) {
+    RetNode = NULL;
+  } else if (CurNode -> getNext() == target) {
+    RetNode = CurNode;
+  } else {
+    RetNode = findPreNode(CurNode -> getNext(), target);
+  }
+  return RetNode;
+}
+
+// Recursive call function to find out equal to specified ID
+Node *findNodeWithID(Node *CurNode, int id) {
+  Node *RetNode;
+  if (CurNode == NULL) {
+    RetNode = NULL;
+  } else if (CurNode -> getStudent() -> getid() == id) {
+    RetNode = CurNode;
+  } else {
+    RetNode = findNodeWithID(CurNode -> getNext(), id);
+  }
+  return RetNode;
+}
+
+// function to find out the node with the smallerst ID
+Node *findNodeWithSmallestID(Node *CurNode) {
+  Node *MinNode;
+  
+  if (CurNode == NULL) return NULL;
+  
+  MinNode = CurNode;
+  CurNode = CurNode -> getNext();
+  while (CurNode != NULL) {
+    if (MinNode -> getStudent() -> getid() > CurNode -> getStudent() -> getid()) MinNode = CurNode;
+    CurNode = CurNode -> getNext();
+  }
+  return MinNode;
+}
+
+// Recursive function to sort the node by the ID
+void sortNode(Node *CurNode) {
+  Node *MinNode, *PreCurNode, *PreMinNode;
+  
+  if ((CurNode == NULL) || (CurNode -> getNext() == NULL)) return;
+  
+  PreCurNode = findPreNode(head, CurNode);
+  MinNode    = findNodeWithSmallestID(CurNode);
+  PreMinNode = findPreNode(head, MinNode);
+
+  // if MinNode is different, it will perform swap
+  if (MinNode != CurNode) {
+    PreMinNode -> setNext(MinNode -> getNext());
+    MinNode -> setNext(CurNode);
+    if (CurNode == head) {
+      head = MinNode;
+    } else {
+      PreCurNode -> setNext(MinNode);
     }
-    newnode = new Node(newstudent);
-    current -> setNext(newnode);
+    sortNode(CurNode);
+  } else {
+    sortNode(CurNode -> getNext());
   }
 }
 
-//delete number in node
-void del(int id){
-  Node *current = head;
-  //find the matching id and make it current
-  while ((current != NULL) && (current -> getStudent() -> getid() != id)) current = current -> getNext();
-  //return if there is no match
-  if (current == NULL) return;
-  //current is set check if its head tail or in the middle
-  if (current == head) {
-    //if data is at head
-    //set the head pointer to point to the one next to current
-    head = current -> getNext();
-    delete current;
-  } else if (current -> getNext() == NULL) {
-    //if data is at tail
-    //get previous and set pointer to the null
-    Node *prev = head;
-    while (prev -> getNext() != current) prev = prev -> getNext();
-    prev -> setNext(NULL);
-    delete current;
+//add student in node
+void add(Student *newstudent) {
+  Node *LstNode, *NewNode;
+
+  LstNode = findLastNode(head);
+  NewNode = new Node(newstudent);
+
+  //very first node; add new node and set value
+  if (LstNode == NULL) {
+    head = NewNode;
   } else {
-    //otherwise
-    //get previous and set pointer to the one next to current
-    Node *prev = head;
-    while (prev -> getNext() != current) prev = prev -> getNext();
-    prev -> setNext(current -> getNext());
-    delete current;
+      LstNode -> setNext(NewNode);
   }
+}
+
+//delete student in node
+void del(int id){
+  Node *CurNode, *PreNode;
+
+  // find the node which is same or larger than student ID
+  CurNode = findNodeWithID(head, id);
+  // find the previous node
+  PreNode = findPreNode(head, CurNode);
+
+  if (CurNode == NULL) return;
+
+  if (CurNode == head) {
+    head = CurNode -> getNext();
+  } else {
+    PreNode -> setNext(CurNode -> getNext());
+  }
+    
+  delete CurNode;
 }
 
 //printing the node
@@ -94,10 +162,10 @@ int main() {
     if ((input[0] == 'A') || (input[0] == 'a')){
       int id;
       float gpa;
-      char name[20];
+      char name[NAME_LENGTH];
       //name
       cout << "Name:" << endl;
-      cin.get(name, 10);
+      cin.get(name, NAME_LENGTH);
       cin.get();
       //id
       cout << "ID:" << endl;
@@ -111,6 +179,7 @@ int main() {
       //add the values
       student -> setValue(id, gpa, name);
       add(student);
+      sortNode(head);
     }
     
     //if print

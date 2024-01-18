@@ -1,11 +1,13 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
+#define NAME_LENGTH	50
+
 class Student {
  private:
   int id;
   float gpa;
-  char name[50];
+  char name[NAME_LENGTH];
   
  public:
   int getid();
