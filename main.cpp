@@ -13,6 +13,7 @@ Linked list
 void add(Student *newstudent);
 void del(int id);
 void print(Node* next);
+void average(Node *next, int count, float sum);
 
 static Node *head = NULL;
 
@@ -98,10 +99,10 @@ void sortNode(Node *CurNode) {
 //add student in node
 void add(Student *newstudent) {
   Node *LstNode, *NewNode;
-
+  
   LstNode = findLastNode(head);
   NewNode = new Node(newstudent);
-
+  
   //very first node; add new node and set value
   if (LstNode == NULL) {
     head = NewNode;
@@ -126,7 +127,7 @@ void del(int id){
   } else {
     PreNode -> setNext(CurNode -> getNext());
   }
-    
+
   delete CurNode;
 }
 
@@ -149,37 +150,53 @@ void print (Node *next) {
   }
 }
 
+void average (Node *next, int count, float sum){
+  //if the node is not null (until the last node) print the values
+  if (next != NULL) {
+    Student *student = next -> getStudent();
+    //recursive call
+    average (next -> getNext(), count + 1, sum + student -> getgpa());
+    if (next -> getNext() == NULL) {
+      count ++;
+      sum += student -> getgpa();
+      cout << sum / (float)count << endl;
+    }
+  }
+}
+
 int main() {
   Student *student;
   char input[10];
   
   do {
-    cout << "ADD/PRINT/DELETE/QUIT: " << endl;
+    cout << "ADD/PRINT/DELETE/AVERAGE/QUIT: " << endl;
     cin.get(input,10);
     cin.get();
     
     //if add
     if ((input[0] == 'A') || (input[0] == 'a')){
-      int id;
-      float gpa;
-      char name[NAME_LENGTH];
-      //name
-      cout << "Name:" << endl;
-      cin.get(name, NAME_LENGTH);
-      cin.get();
-      //id
-      cout << "ID:" << endl;
-      cin >> id;
-      cin.get();
-      //gpa
-      cout << "GPA:" << endl;
-      cin >> gpa;
-      cin.get();
-      student = new Student();
-      //add the values
-      student -> setValue(id, gpa, name);
-      add(student);
-      sortNode(head);
+      if((input[1] == 'D') || (input[1] == 'd')){
+	int id;
+	float gpa;
+	char name[NAME_LENGTH];
+	//name
+	cout << "Name:" << endl;
+	cin.get(name, NAME_LENGTH);
+	cin.get();
+	//id
+	cout << "ID:" << endl;
+	cin >> id;
+	cin.get();
+	//gpa
+	cout << "GPA:" << endl;
+	cin >> gpa;
+	cin.get();
+	student = new Student();
+	//add the values
+	student -> setValue(id, gpa, name);
+	add(student);
+	sortNode(head);
+      }
     }
     
     //if print
@@ -195,6 +212,13 @@ int main() {
       cin >> id;
       cin.get();
       del(id);
+    }
+    
+    //if average
+      if((input[0] == 'A') || (input[0] == 'a')){
+	if((input[1] == 'V') || (input[1] == 'v')){
+	  average(head, 0, 0);
+      }
     }
     
   } while ((input[0] != 'Q') && (input[0] != 'q'));
